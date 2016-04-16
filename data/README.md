@@ -1,0 +1,1 @@
+`twitter\` is a symlink to a folder that contains word embeddings using GloVe on twitter data (http://nlp.stanford.edu/projects/glove/)
