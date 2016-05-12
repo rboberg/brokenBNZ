@@ -1,6 +1,19 @@
 import os
 import pdb
 
+# This file is used to hash
+# the tokens from glove.twitter.27B.100d.txt to
+# folders based on the initial letters of the
+# token. This makes it much faster to search
+# for the vectors associated with the tokens later.
+# The file fname and directory topdir must exist in
+# the directory fpath.
+# It takes a token from the beginning of each line
+# of fpath and uses the first ndir characters
+# of the token to create ndir nested directories
+# in fpath/topdir.
+# It takes a while to run.
+
 def write2file(x, fname, mode='wb'):
 	if not os.path.exists(os.path.dirname(fname)):
 		try:
@@ -11,14 +24,15 @@ def write2file(x, fname, mode='wb'):
 	with open(fname, mode) as f:
 		f.write(x+'\n')
 
-fname = 'glove.twitter.27B.50d.txt'
-topdir = '50d'
+fpath = '../data/twitter'
+fname = 'glove.twitter.27B.200d.txt'
+topdir = '200d'
 fout = 'tokens.txt'
 ndir = 3
 ctr = 0
 verbose = False
 
-with open(fname,'r') as f:
+with open('/'.join([fpath,fname]),'r') as f:
     for x in f:
         x = x.rstrip()
         ascii_check = all(ord(c) < 128 for c in x)
@@ -29,9 +43,9 @@ with open(fname,'r') as f:
         		for j in range(i,ndir): dtup += ['none']
         		break
         	dtup += [x[i]]
-		
-        writef = topdir + '/' +'/'.join(dtup) + '/' + fout
-        
+
+        writef = '/'.join([fpath,topdir]+dtup+[fout])
+
         write2file(x, writef, 'a+')
         if verbose:
         	print writef
